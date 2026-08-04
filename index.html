@@ -324,7 +324,7 @@
   </div>
 
   <script>
-    // URL do seu Google Apps Script (Cole aqui o link que você copiou no Step 3)
+    // URL do seu Google Apps Script
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyiEAnTOcNxAslu1DbB2CxE9ooiK8HQ-YIa4eAnOKTu2L5qvb9xSMNT5M0Bg6_gEa_P/exec';
 
     // Preenche a data atual por padrão
@@ -361,7 +361,6 @@
       btnSubmit.disabled = true;
       btnSubmit.innerText = "Enviando respostas para o professor...";
 
-      // Estrutura o objeto que será salvo na planilha
       const payload = {
         nome: name,
         turma: turma,
@@ -371,11 +370,11 @@
       };
 
       try {
-        // Envia os dados para a planilha via POST
+        // Envio ajustado com text/plain para contornar restrições de CORS do Apps Script
         await fetch(SCRIPT_URL, {
           method: 'POST',
-          mode: 'no-cors', // Necessário para evitar bloqueios de CORS do Apps Script
-          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
 
