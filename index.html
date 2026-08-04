@@ -324,10 +324,13 @@
   </div>
 
   <script>
-    // Preenche a data atual
+    // URL do seu Google Apps Script (Cole aqui o link que você copiou no Step 3)
+    const SCRIPT_URL = 'https://script.google.com/macros/s/COLE_SEU_LINK_AQUI/exec';
+
+    // Preenche a data atual por padrão
     document.getElementById('activityDate').valueAsDate = new Date();
 
-    // Restrição Anti-Cola (Ctrl+V e botão direito)
+    // Bloqueia a ação de colar (Ctrl+V) nas caixas de texto
     document.querySelectorAll('textarea').forEach(textarea => {
       textarea.addEventListener('paste', function(e) {
         e.preventDefault();
@@ -335,24 +338,66 @@
       });
     });
 
-    // Função de Geração de PDF / Impressão
-    function generatePDFReport() {
-      const name = document.getElementById('studentName').value.trim();
-      const turma = document.getElementById('studentTurma').value.trim();
-      const q1 = document.getElementById('q1').value.trim();
-      const q2 = document.getElementById('q2').value.trim();
+    // Função de envio e geração de PDF
+    async function generatePDFReport() {
+      const nameInput = document.getElementById('studentName');
+      const turmaInput = document.getElementById('studentTurma');
+      const dateInput = document.getElementById('activityDate');
+      const q1Input = document.getElementById('q1');
+      const q2Input = document.getElementById('q2');
+
+      const name = nameInput.value.trim();
+      const turma = turmaInput.value.trim();
+      const date = dateInput.value;
+      const q1 = q1Input.value.trim();
+      const q2 = q2Input.value.trim();
 
       if (!name || !turma || !q1 || !q2) {
-        alert('Por favor, preencha o seu Nome, Turma e responda a todas as questões antes de gerar o relatório!');
+        alert('Por favor, preencha o seu Nome, Turma e responda a todas as questões antes de enviar!');
         return;
       }
 
-      // Transfere as respostas das textareas para as divs de impressão
-      document.getElementById('q1_print').innerText = q1;
-      document.getElementById('q2_print').innerText = q2;
+      const btnSubmit = document.querySelector('.btn-submit');
+      btnSubmit.disabled = true;
+      btnSubmit.innerText = "Enviando respostas para o professor...";
 
-      // Executa o comando de impressão do navegador
-      window.print();
+      // Estrutura o objeto que será salvo na planilha
+      const payload = {
+        nome: name,
+        turma: turma,
+        dataAtividade: date,
+        q1: q1,
+        q2: q2
+      };
+
+      try {
+        // Envia os dados para a planilha via POST
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors', // Necessário para evitar bloqueios de CORS do Apps Script
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        alert('✅ Respostas enviadas e registradas com sucesso no sistema do professor!');
+
+        // Transfere as respostas para as divs de impressão e abre a janela de PDF
+        document.getElementById('q1_print').innerText = q1;
+        document.getElementById('q2_print').innerText = q2;
+        
+        window.print();
+
+      } catch (error) {
+        console.error('Erro ao enviar:', error);
+        alert('⚠️ Ocorreu um erro ao enviar suas respostas online, mas você ainda pode gerar o PDF do seu relatório.');
+        
+        document.getElementById('q1_print').innerText = q1;
+        document.getElementById('q2_print').innerText = q2;
+        window.print();
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = "Gerar Relatório em PDF";
+      }
     }
   </script>
 </body>
