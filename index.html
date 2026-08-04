@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atividade Prática: Dimensionamento de Carneiro Hidráulico</title>
+  <style>
+    :root {
+      --primary: #15803d; /* Verde voltado para Agropecuária */
+      --primary-hover: #166534;
+      --bg: #f0fdf4;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --border: #bbf7d0;
+      --accent: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border);
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .student-info {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 15px;
+      background: #f0fdf4;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      border: 1px solid var(--border);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+      color: #166534;
+    }
+
+    .form-group input, .form-group textarea {
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    /* Texto Base Técnico */
+    .theory-section {
+      background-color: #ffffff;
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    .theory-section h2 {
+      color: var(--primary);
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+
+    .theory-section p {
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      color: #334155;
+      text-align: justify;
+    }
+
+    .formula-box {
+      background-color: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 12px 15px;
+      margin: 15px 0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.95rem;
+    }
+
+    /* Estudo de Caso Prático */
+    .case-study {
+      background-color: #ecfdf5;
+      border-left: 5px solid var(--accent);
+      padding: 20px;
+      border-radius: 6px;
+      margin-bottom: 30px;
+    }
+
+    .case-study h3 {
+      color: #065f46;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .case-study p {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: #064e3b;
+    }
+
+    .questions-section {
+      margin-bottom: 30px;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .question-card h3 {
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .question-card label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn-submit {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Estilização para Gerar PDF / Impressão */
+    @media print {
+      body {
+        background-color: #ffffff;
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+        border: none;
+      }
+
+      .actions, .no-print {
+        display: none !important;
+      }
+
+      .case-study {
+        border-left: 3px solid #000;
+        background-color: #f9f9f9;
+      }
+
+      textarea, input {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+
+      .print-only-text {
+        display: block !important;
+        white-space: pre-wrap;
+        font-family: inherit;
+        font-size: 0.95rem;
+        margin-top: 5px;
+      }
+    }
+
+    .print-only-text {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Curso Técnico em Agropecuária</h1>
+      <p>Disciplina: Tecnologias Aplicadas à Irrigação e Drenagem | Atividade Prática</p>
+    </header>
+
+    <form id="activityForm">
+      <!-- Identificação do Aluno -->
+      <div class="student-info">
+        <div class="form-group">
+          <label for="studentName">Nome do Aluno(a):</label>
+          <input type="text" id="studentName" required placeholder="Digite seu nome completo">
+        </div>
+        <div class="form-group">
+          <label for="studentTurma">Turma:</label>
+          <input type="text" id="studentTurma" required placeholder="Ex: TAGRO-2026">
+        </div>
+        <div class="form-group">
+          <label for="activityDate">Data:</label>
+          <input type="date" id="activityDate" required>
+        </div>
+      </div>
+
+      <!-- Fundamentação Teórica -->
+      <section class="theory-section">
+        <h2>Fundamentação Teórica: O Carneiro Hidráulico</h2>
+        <p>
+          O <strong>carneiro hidráulico</strong> é um dispositivo de elevação de água automático que utiliza a energia do golpe de aríete (energia cinética da própria água em movimento) para elevar uma fração do volume aproveitado a uma altura superior à da captação, sem a necessidade de energia elétrica ou combustível fóssil.
+        </p>
+        <p>
+          O princípio de funcionamento baseia-se no fechamento repentino da válvula de alívio (ou de perda). Esse bloqueio transforma a energia cinética do fluxo de alimentação em um pico de pressão instantâneo, que força a abertura da válvula de retenção e empurra a água para dentro da câmara de ar e para a tubulação de recalque.
+        </p>
+
+        <div class="formula-box">
+          <strong>Fórmula do Rendimento de D'Aubuisson:</strong><br><br>
+          q = (Q × H × η) / h<br><br>
+          Onde:<br>
+          • <strong>q</strong> = Vazão recalcada/entregue (L/min ou L/h)<br>
+          • <strong>Q</strong> = Vazão total disponível na fonte/alimentação (L/min)<br>
+          • <strong>H</strong> = Altura manométrica de queda/alimentação (metros)<br>
+          • <strong>h</strong> = Altura manométrica de elevação/recalque (metros)<br>
+          • <strong>η (eta)</strong> = Rendimento hidráulico do carneiro (usualmente entre 0,60 e 0,70, ou 60% a 70%)
+        </div>
+      </section>
+
+      <!-- Situação-Problema Prática -->
+      <section class="case-study">
+        <h3>Situação-Problema: Projeto no Sítio Boa Esperança</h3>
+        <p>
+          Um produtor rural possui uma nascente no Sítio Boa Esperança com uma vazão disponível constante de <strong>Q = 40 Litros/minuto</strong>. A topografia permite instalar o carneiro hidráulico com uma queda de alimentação de <strong>H = 3 metros</strong>.
+        </p>
+        <p>
+          O objetivo do produtor é elevar água até um reservatório de irrigação localizado no alto do morro, situado a uma altura de recalque de <strong>h = 18 metros</strong>. Considere que o carneiro hidráulico fabricado na propriedade apresenta um rendimento estimado de <strong>η = 65% (0,65)</strong>.
+        </p>
+      </section>
+
+      <!-- Questões de Aplicação -->
+      <section class="questions-section">
+        
+        <div class="question-card">
+          <h3>Questão 1: Cálculo da Vazão Recalcada (q)</h3>
+          <label for="q1">
+            Com base nos dados fornecidos na Situação-Problema e utilizando a fórmula de D'Aubuisson, demonstre os cálculos e determine a vazão de água (em Litros/minuto e em Litros por Dia) que chegará ao reservatório superior:
+          </label>
+          <textarea id="q1" class="no-print" placeholder="Desenvolva os cálculos e explique o resultado com suas próprias palavras..." required></textarea>
+          <div class="print-only-text" id="q1_print"></div>
+        </div>
+
+        <div class="question-card">
+          <h3>Questão 2: Recomendação e Viabilidade Técnica</h3>
+          <label for="q2">
+            O produtor rural necessita de 1.500 Litros por dia para abastecer seu sistema de irrigação por gotejamento na horta. O projeto do carneiro hidráulico atende a essa demanda diária? Justifique tecnicamente e proponha soluções operacionais caso a água seja insuficiente:
+          </label>
+          <textarea id="q2" class="no-print" placeholder="Escreva sua análise técnica com suas próprias palavras..." required></textarea>
+          <div class="print-only-text" id="q2_print"></div>
+        </div>
+
+      </section>
+
+      <!-- Botão de Ação -->
+      <div class="actions">
+        <button type="button" class="btn-submit" onclick="generatePDFReport()">Gerar Relatório em PDF</button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    // Preenche a data atual
+    document.getElementById('activityDate').valueAsDate = new Date();
+
+    // Restrição Anti-Cola (Ctrl+V e botão direito)
+    document.querySelectorAll('textarea').forEach(textarea => {
+      textarea.addEventListener('paste', function(e) {
+        e.preventDefault();
+        alert('Atenção: A funcionalidade de colar (Ctrl+V) está desabilitada nesta atividade! Digite a resposta com suas próprias palavras.');
+      });
+    });
+
+    // Função de Geração de PDF / Impressão
+    function generatePDFReport() {
+      const name = document.getElementById('studentName').value.trim();
+      const turma = document.getElementById('studentTurma').value.trim();
+      const q1 = document.getElementById('q1').value.trim();
+      const q2 = document.getElementById('q2').value.trim();
+
+      if (!name || !turma || !q1 || !q2) {
+        alert('Por favor, preencha o seu Nome, Turma e responda a todas as questões antes de gerar o relatório!');
+        return;
+      }
+
+      // Transfere as respostas das textareas para as divs de impressão
+      document.getElementById('q1_print').innerText = q1;
+      document.getElementById('q2_print').innerText = q2;
+
+      // Executa o comando de impressão do navegador
+      window.print();
+    }
+  </script>
+</body>
+</html>
